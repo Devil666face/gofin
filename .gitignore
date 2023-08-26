@@ -1,3 +1,4 @@
 /tmp
 /gofinabot
 /.env
+/db.sqlite3

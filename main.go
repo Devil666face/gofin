@@ -1,13 +1,22 @@
 package main
 
 import (
-	"github.com/Devil666face/gofinabot/cmd"
+	. "github.com/Devil666face/gofinabot/cmd"
 )
 
 func main() {
-	bot, err := cmd.Bot()
-	if err != nil {
-		panic(err)
+	switch Cli() {
+	case MIGRATE:
+		err := Migrate()
+		if err != nil {
+			panic(err)
+		}
+
+	case START:
+		bot, err := Bot()
+		if err != nil {
+			panic(err)
+		}
+		bot.Start()
 	}
-	bot.Start()
 }

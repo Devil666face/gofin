@@ -25,5 +25,9 @@ func Connect() error {
 }
 
 func Migrate(tables ...interface{}) error {
+	err := Connect()
+	if err != nil {
+		return err
+	}
 	return DB.AutoMigrate(tables...)
 }
