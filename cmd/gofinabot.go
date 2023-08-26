@@ -6,6 +6,7 @@ import (
 	"github.com/Devil666face/gofinabot/config"
 	"github.com/Devil666face/gofinabot/database"
 	"github.com/Devil666face/gofinabot/models"
+	. "github.com/Devil666face/gofinabot/routes"
 
 	telebot "gopkg.in/telebot.v3"
 )
@@ -36,6 +37,9 @@ func Bot() (*telebot.Bot, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	SetMiddlewares(b)
+	SetRoutes(b)
 
 	return b, nil
 }

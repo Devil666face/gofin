@@ -13,7 +13,6 @@ run: ## Temp build and run
 
 clear: ## Clear temp dirs
 	rm -rf db.sqlite3
-	rm -rf static
 	rm -rf tmp
 	go build -o tmp/main main.go
 	tmp/main -migrate
