@@ -10,6 +10,7 @@ import (
 var (
 	TOKEN = env("TOKEN", "")
 	DB    = env("DB", "db.sqlite3")
+	DEBUG = boolenv(env("DEBUG", "False"))
 )
 
 func env(name string, fallback string) string {

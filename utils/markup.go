@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	Menu        = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	Menu        = &telebot.ReplyMarkup{}
 	NewTransBtn = telebot.ReplyButton{
 		Text: TRANS_NEW,
 	}
@@ -17,5 +17,6 @@ func init() {
 		ReplyKeyboard: [][]telebot.ReplyButton{
 			{NewTransBtn},
 		},
+		ResizeKeyboard: true,
 	}
 }

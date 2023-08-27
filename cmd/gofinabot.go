@@ -29,8 +29,10 @@ func Bot() (*telebot.Bot, error) {
 		return nil, dberr
 	}
 	conf := telebot.Settings{
-		Token:  config.TOKEN,
-		Poller: &telebot.LongPoller{Timeout: 10 * time.Second},
+		Token:     config.TOKEN,
+		Poller:    &telebot.LongPoller{Timeout: 10 * time.Second},
+		Verbose:   config.DEBUG,
+		ParseMode: telebot.ModeHTML,
 	}
 
 	b, err := telebot.NewBot(conf)
