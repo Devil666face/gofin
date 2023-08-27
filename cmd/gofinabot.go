@@ -3,7 +3,7 @@ package cmd
 import (
 	"time"
 
-	"github.com/Devil666face/gofinabot/config"
+	. "github.com/Devil666face/gofinabot/config"
 	"github.com/Devil666face/gofinabot/database"
 	"github.com/Devil666face/gofinabot/models"
 	. "github.com/Devil666face/gofinabot/routes"
@@ -29,9 +29,9 @@ func Bot() (*telebot.Bot, error) {
 		return nil, dberr
 	}
 	conf := telebot.Settings{
-		Token:     config.TOKEN,
+		Token:     Cfg.Token,
 		Poller:    &telebot.LongPoller{Timeout: 10 * time.Second},
-		Verbose:   config.DEBUG,
+		Verbose:   Cfg.Debug,
 		ParseMode: telebot.ModeHTML,
 	}
 

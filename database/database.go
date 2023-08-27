@@ -3,7 +3,7 @@ package database
 import (
 	"time"
 
-	"github.com/Devil666face/gofinabot/config"
+	. "github.com/Devil666face/gofinabot/config"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -13,7 +13,7 @@ import (
 var DB *gorm.DB
 
 func Connect() error {
-	db, err := gorm.Open(sqlite.Open(config.DB), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(Cfg.Db), &gorm.Config{
 		NowFunc: func() time.Time { return time.Now().Local() },
 		Logger:  logger.Default.LogMode(logger.Info),
 	})
