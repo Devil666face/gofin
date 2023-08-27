@@ -17,7 +17,7 @@ func Start(c telebot.Context) error {
 		}
 		err := user.Create()
 		if err != nil {
-			c.Send(utils.ErrCreateUser(c))
+			return c.Send(utils.ErrCreateUser(c))
 		}
 		return c.Send(utils.SuccessfulCreateUser(c), utils.Menu)
 	}
