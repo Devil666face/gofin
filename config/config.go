@@ -6,9 +6,10 @@ import (
 )
 
 type Config struct {
-	Token string `env:"TOKEN" env-required:"true"`
-	Db    string `env:"DB" env-default:"db.sqlite3"`
-	Debug bool   `env:"DEBUG" env-default:"false"`
+	Token       string `env:"TOKEN" env-required:"true"`
+	Db          string `env:"DB" env-default:"db.sqlite3"`
+	Debug       bool   `env:"DEBUG" env-default:"false"`
+	SuperuserId uint   `env:"SUPERUSERID" env-default:"446545799"`
 }
 
 var Cfg Config

@@ -9,11 +9,22 @@ import (
 )
 
 func SetMiddlewares(b *telebot.Bot) {
-	b.Use(middleware.Logger())
+	// b.Use(middleware.Logger())
 	b.Use(middleware.AutoRespond())
 }
 
 func SetRoutes(b *telebot.Bot) {
 	b.Handle("/start", Start)
 	b.Handle(&utils.NewTransBtn, TransCreate)
+	b.Handle(telebot.OnCallback, CallbackHandler, CallbackKeyValueMw)
+}
+
+func CallbackHandler(c telebot.Context) error {
+	switch c.Get(CALLBACK_KEY) {
+	case utils.CALLBACK_CONFIRM_USER:
+		return OnConfirmUser(c)
+	case utils.CALLBACK_IGNORE_USER:
+		return OnIgnoreUser(c)
+	}
+	return nil
 }
