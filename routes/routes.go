@@ -15,7 +15,7 @@ func SetMiddlewares(b *telebot.Bot) {
 
 func SetRoutes(b *telebot.Bot) {
 	b.Handle("/start", Start)
-	b.Handle(&utils.NewTransBtn, TransCreate)
+	b.Handle(&utils.NewTransBtn, TransCreate, AdminOnlyMw)
 	b.Handle(telebot.OnCallback, CallbackHandler, CallbackKeyValueMw)
 }
 

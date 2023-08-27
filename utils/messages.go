@@ -41,5 +41,9 @@ func SuccessfulUpdateUser(username string) string {
 }
 
 func ErrSendMessage(username string) string {
-	return fmt.Sprintf("Failed send message to - @%s", username)
+	return fmt.Sprintf("Ошибка отправки сообщения пользователю - @%s", username)
+}
+
+func PermissionsForUserAdded(username string) string {
+	return fmt.Sprintf("Администратор добавил вас - @%s", username)
 }

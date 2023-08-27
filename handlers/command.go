@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 
 	. "github.com/Devil666face/gofinabot/models"
@@ -34,11 +33,10 @@ func Start(c telebot.Context) error {
 		if err != nil {
 			return c.Send(utils.ErrCreateUser(c))
 		}
-		AskAdmins(c)
-		return c.Send(utils.SuccessfulCreateUser(c), utils.Menu)
 	}
 	if !user.IsAllow {
 		AskAdmins(c)
+		return c.Send(utils.SuccessfulCreateUser(c), telebot.RemoveKeyboard)
 	}
 	return c.Send(utils.UserAlreadyCreate(c), utils.Menu)
 }
@@ -54,12 +52,19 @@ func OnConfirmUser(c telebot.Context) error {
 	if err != nil {
 		return c.Send(utils.ErrUserUpdate(user.Username))
 	}
-	return c.Send(utils.SuccessfulUpdateUser(user.Username))
+	err = c.Delete()
+	if err != nil {
+		log.Print(err)
+	}
+	_, err = c.Bot().Send(&telebot.User{ID: int64(user.TGID)}, utils.PermissionsForUserAdded(user.Username), utils.Menu)
+	if err != nil {
+		return c.Send(utils.ErrSendMessage(user.Username))
+	}
+	return c.Send(utils.SuccessfulUpdateUser(user.Username), utils.Menu)
 }
 
 func OnIgnoreUser(c telebot.Context) error {
-	fmt.Println("Ignore")
-	return nil
+	return c.Delete()
 }
 
 func TransCreate(c telebot.Context) error {

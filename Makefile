@@ -16,7 +16,7 @@ clear: ## Clear temp dirs
 	rm -rf tmp
 	go build -o tmp/main main.go
 	tmp/main -migrate
-	tmp/main -superuser
+	# tmp/main -superuser
 
 air: ## Run dev server
 	~/go/bin/air

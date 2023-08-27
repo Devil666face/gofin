@@ -11,7 +11,6 @@ var (
 	NewTransBtn = telebot.ReplyButton{
 		Text: TRANS_NEW,
 	}
-	RemoveMenu = &telebot.ReplyMarkup{RemoveKeyboard: true}
 )
 
 var (

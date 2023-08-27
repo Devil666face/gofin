@@ -42,12 +42,32 @@ func (user *User) Update() error {
 	return nil
 }
 
-func GetAllAdmins() ([]User, error) {
+func getUsersForSelect(query string) ([]User, error) {
 	var users = []User{}
-	err := database.DB.Where("is_admin = ?", true).Find(&users)
+	err := database.DB.Where(query, true).Find(&users)
 	if err != nil {
 		users = append(users, User{TGID: Cfg.SuperuserId})
 		return users, err.Error
 	}
 	return users, nil
+}
+
+func GetAllAdmins() ([]User, error) {
+	return getUsersForSelect("is_admin = ?")
+}
+
+func GetAllAllows() ([]User, error) {
+	return getUsersForSelect("is_allow = ?")
+}
+
+func GetChatIdsForSelector(selector func() ([]User, error)) ([]int64, error) {
+	var chats = []int64{}
+	users, err := selector()
+	if err != nil {
+		return chats, err
+	}
+	for _, u := range users {
+		chats = append(chats, int64(u.TGID))
+	}
+	return chats, nil
 }

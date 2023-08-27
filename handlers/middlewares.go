@@ -1,14 +1,13 @@
 package handlers
 
 import (
-	// "log"
-
-	// . "github.com/Devil666face/gofinabot/models"
-	// "github.com/Devil666face/gofinabot/utils"
-
+	"log"
 	"strings"
 
+	. "github.com/Devil666face/gofinabot/models"
+
 	telebot "gopkg.in/telebot.v3"
+	"gopkg.in/telebot.v3/middleware"
 )
 
 var (
@@ -24,6 +23,24 @@ func CallbackKeyValueMw(next telebot.HandlerFunc) telebot.HandlerFunc {
 			c.Set(CALLBACK_KEY, data[0])
 			c.Set(CALLBACK_VAL, data[1])
 		}
-		return next(c) // continue execution chain
+		return next(c)
 	}
+}
+
+func permissionMw(selectorFunc func() ([]User, error), next telebot.HandlerFunc) telebot.HandlerFunc {
+	chats, err := GetChatIdsForSelector(selectorFunc)
+	if err != nil {
+		log.Print(err)
+		return middleware.Whitelist()(next)
+	}
+	return middleware.Whitelist(chats...)(next)
+
+}
+
+func AdminOnlyMw(next telebot.HandlerFunc) telebot.HandlerFunc {
+	return permissionMw(GetAllAdmins, next)
+}
+
+func AllowOnlyMw(next telebot.HandlerFunc) telebot.HandlerFunc {
+	return permissionMw(GetAllAllows, next)
 }
