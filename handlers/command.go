@@ -5,6 +5,7 @@ import (
 
 	. "github.com/Devil666face/gofinabot/models"
 	"github.com/Devil666face/gofinabot/utils"
+	"github.com/vitaliy-ukiru/fsm-telebot"
 
 	telebot "gopkg.in/telebot.v3"
 )
@@ -67,6 +68,7 @@ func OnIgnoreUser(c telebot.Context) error {
 	return c.Delete()
 }
 
-func TransCreate(c telebot.Context) error {
-	return c.Send("FOO", telebot.RemoveKeyboard)
+func OnBackBtn(c telebot.Context, f fsm.Context) error {
+	go f.Finish(true)
+	return c.Send(utils.Back(), utils.Menu)
 }

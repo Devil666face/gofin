@@ -8,6 +8,9 @@ import (
 
 var (
 	TRANS_NEW    string = "Добавить операцию"
+	TRANS_TYPE   string = "Категории операций"
+	TYPE_ADD     string = "Добавить категорию для операций"
+	BACK         string = "Назад"
 	CONFIRM_USER string = "Добавить"
 	IGNORE_USER  string = "Игнорировать"
 )
@@ -46,4 +49,24 @@ func ErrSendMessage(username string) string {
 
 func PermissionsForUserAdded(username string) string {
 	return fmt.Sprintf("Администратор добавил вас - @%s", username)
+}
+
+func Back() string {
+	return "Возвращаемся назад"
+}
+
+func ChangeTypeForUpdate() string {
+	return "Выберите категорию для изменения"
+}
+
+func AddNewType() string {
+	return "Отправьте название категории"
+}
+
+func ErrCreateType(c telebot.Context) string {
+	return fmt.Sprintf("Произошла ошибка при создании категории - %s", c.Message().Text)
+}
+
+func SuccessfulCreateType(c telebot.Context) string {
+	return fmt.Sprintf("Категория - %s - успешно создана", c.Message().Text)
 }

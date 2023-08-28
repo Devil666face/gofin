@@ -11,6 +11,19 @@ var (
 	NewTransBtn = telebot.ReplyButton{
 		Text: TRANS_NEW,
 	}
+	TypeTransBtn = telebot.ReplyButton{
+		Text: TRANS_TYPE,
+	}
+	BackButton = telebot.ReplyButton{
+		Text: BACK,
+	}
+)
+
+var (
+	TypeMenu      = &telebot.ReplyMarkup{}
+	TypeAddButton = telebot.ReplyButton{
+		Text: TYPE_ADD,
+	}
 )
 
 var (
@@ -22,6 +35,15 @@ func init() {
 	Menu = &telebot.ReplyMarkup{
 		ReplyKeyboard: [][]telebot.ReplyButton{
 			{NewTransBtn},
+			{TypeTransBtn},
+		},
+		ResizeKeyboard: true,
+	}
+
+	TypeMenu = &telebot.ReplyMarkup{
+		ReplyKeyboard: [][]telebot.ReplyButton{
+			{TypeAddButton},
+			{BackButton},
 		},
 		ResizeKeyboard: true,
 	}

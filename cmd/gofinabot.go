@@ -8,6 +8,7 @@ import (
 	"github.com/Devil666face/gofinabot/models"
 	. "github.com/Devil666face/gofinabot/routes"
 
+	"github.com/vitaliy-ukiru/fsm-telebot"
 	telebot "gopkg.in/telebot.v3"
 )
 
@@ -25,6 +26,7 @@ func Migrate() error {
 
 func Bot() (*telebot.Bot, error) {
 	dberr := database.Connect()
+	database.Storage()
 	if dberr != nil {
 		return nil, dberr
 	}
@@ -40,8 +42,9 @@ func Bot() (*telebot.Bot, error) {
 		return nil, err
 	}
 
-	SetMiddlewares(b)
-	SetRoutes(b)
+	f := fsm.NewManager(b, nil, database.FsmStore, nil)
+	SetMiddlewares(b, f)
+	SetRoutes(b, f)
 
 	return b, nil
 }
