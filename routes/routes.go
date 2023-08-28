@@ -22,9 +22,9 @@ func SetRoutes(b *telebot.Bot) {
 func CallbackHandler(c telebot.Context) error {
 	switch c.Get(CALLBACK_KEY) {
 	case utils.CALLBACK_CONFIRM_USER:
-		return OnConfirmUser(c)
+		return AdminOnlyMw(OnConfirmUser)(c)
 	case utils.CALLBACK_IGNORE_USER:
-		return OnIgnoreUser(c)
+		return AdminOnlyMw(OnIgnoreUser)(c)
 	}
 	return nil
 }
