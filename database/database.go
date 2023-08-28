@@ -5,14 +5,30 @@ import (
 
 	. "github.com/Devil666face/gofinabot/config"
 
-	"github.com/vitaliy-ukiru/fsm-telebot/storages/memory"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
-var FsmStore *memory.Storage
+
+var Userstore map[int64]map[string]interface{}
+
+func init() {
+	Userstore = make(map[int64]map[string]interface{})
+}
+
+func SetInStore(id int64, k string, v interface{}) {
+	if _, ok := Userstore[id]; !ok {
+		Userstore[id] = make(map[string]interface{})
+	}
+	Userstore[id][k] = v
+}
+
+func GetFromStore(id int64, k string) (interface{}, bool) {
+	val, ok := Userstore[id][k]
+	return val, ok
+}
 
 func Connect() error {
 	db, err := gorm.Open(sqlite.Open(Cfg.Db), &gorm.Config{
@@ -24,11 +40,6 @@ func Connect() error {
 	}
 	DB = db
 	return nil
-}
-
-func Storage() {
-	s := memory.NewStorage()
-	FsmStore = s
 }
 
 func Migrate(tables ...interface{}) error {

@@ -10,6 +10,13 @@ import (
 	telebot "gopkg.in/telebot.v3"
 )
 
+func delete(c telebot.Context) {
+	err := c.Delete()
+	if err != nil {
+		log.Print(err)
+	}
+}
+
 func AskAdmins(c telebot.Context) {
 	admins, err := GetAllAdmins()
 	if err != nil {
@@ -70,5 +77,5 @@ func OnIgnoreUser(c telebot.Context) error {
 
 func OnBackBtn(c telebot.Context, f fsm.Context) error {
 	go f.Finish(true)
-	return c.Send(utils.Back(), utils.Menu)
+	return c.Send(utils.GO_BACK, utils.Menu)
 }
