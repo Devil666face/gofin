@@ -11,21 +11,39 @@ import (
 
 var (
 	Menu        = &telebot.ReplyMarkup{}
-	NewTransBtn = telebot.ReplyButton{
+	AddTransBtn = telebot.ReplyButton{
 		Text: TRANS_NEW,
 	}
 	TypeTransBtn = telebot.ReplyButton{
 		Text: TRANS_TYPE,
 	}
-	BackButton = telebot.ReplyButton{
+)
+
+var (
+	TypeMenu   = &telebot.ReplyMarkup{}
+	TypeAddBtn = telebot.ReplyButton{
+		Text: TYPE_ADD,
+	}
+	BackBtn = telebot.ReplyButton{
 		Text: BACK,
 	}
 )
 
 var (
-	TypeMenu      = &telebot.ReplyMarkup{}
-	TypeAddButton = telebot.ReplyButton{
-		Text: TYPE_ADD,
+	TransMenu = &telebot.ReplyMarkup{
+		ReplyKeyboard: [][]telebot.ReplyButton{
+			{BackBtn},
+		},
+		ResizeKeyboard: true,
+	}
+	BalanceInline    = &telebot.ReplyMarkup{}
+	ExpenseInlineBtn = telebot.InlineButton{
+		Text:   EXPENSE,
+		Unique: fmt.Sprintf("%s:%t", CALLBACK_TRANS_BALANCE, CALLBACK_EXPENSE),
+	}
+	IncomeInlineBtn = telebot.InlineButton{
+		Text:   INCOME,
+		Unique: fmt.Sprintf("%s:%t", CALLBACK_TRANS_BALANCE, CALLBACK_INCOME),
 	}
 )
 
@@ -40,10 +58,16 @@ var (
 	CALLBACK_TYPE_DELETE string = "type_delete"
 )
 
+var (
+	CALLBACK_TRANS_BALANCE string = "trans_balance"
+	CALLBACK_EXPENSE       bool   = false
+	CALLBACK_INCOME        bool   = true
+)
+
 func init() {
 	Menu = &telebot.ReplyMarkup{
 		ReplyKeyboard: [][]telebot.ReplyButton{
-			{NewTransBtn},
+			{AddTransBtn},
 			{TypeTransBtn},
 		},
 		ResizeKeyboard: true,
@@ -51,8 +75,15 @@ func init() {
 
 	TypeMenu = &telebot.ReplyMarkup{
 		ReplyKeyboard: [][]telebot.ReplyButton{
-			{TypeAddButton},
-			{BackButton},
+			{TypeAddBtn},
+			{BackBtn},
+		},
+		ResizeKeyboard: true,
+	}
+
+	BalanceInline = &telebot.ReplyMarkup{
+		InlineKeyboard: [][]telebot.InlineButton{
+			{ExpenseInlineBtn, IncomeInlineBtn},
 		},
 		ResizeKeyboard: true,
 	}

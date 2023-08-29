@@ -12,7 +12,7 @@ var (
 	CHANGE_TYPE_FOR_UPDATE     = "Выберите категорию для изменения"
 	ADD_NEW_TYPE               = "Отправьте название категории"
 	ERR_GET_ALL_TYPES_FOR_USER = "Произошла ошибка при получении всех категорий для вашего пользователя"
-	OUR_TYPES                  = "Ваши категории"
+	OUR_TYPES                  = "Ваши категории:"
 )
 
 func SuccessfulCreateType(c telebot.Context) string {

@@ -14,15 +14,11 @@ import (
 
 var (
 	InputTypeName               = fsm.NewStateGroup("type")
-	InputTypeNameState          = InputTypeName.New("type:name")
-	InputTypeNameForUpdateState = InputTypeName.New("type:name_update")
+	InputTypeNameState          = InputTypeName.New("name")
+	InputTypeNameForUpdateState = InputTypeName.New("name_update")
 )
 
-var (
-	TYPEID = "typeid"
-)
-
-func OnTransBtn(c telebot.Context) error {
+func OnTypeBtn(c telebot.Context) error {
 	trtypes, err := GetAllTypesForUser(c.Chat().ID)
 	if err != nil {
 		return c.Send(m.ERR_GET_ALL_TYPES_FOR_USER)
@@ -59,7 +55,7 @@ func OnTypeNameForUpdateRecive(c telebot.Context, s fsm.Context) error {
 		typeid int64
 		t      TypeTransaction
 	)
-	if err := s.Get(TYPEID, &typeid); err != nil {
+	if err := s.Get(InputTypeNameForUpdateState.GoString(), &typeid); err != nil {
 		log.Print(err)
 	}
 	if err := t.Get(typeid); err != nil {
@@ -101,7 +97,7 @@ func OnUpdateTypeNameInlineBtn(c telebot.Context, s fsm.Context) error {
 	if err := s.Set(InputTypeNameForUpdateState); err != nil {
 		log.Print(err)
 	}
-	if err := s.Update(TYPEID, int64(t.ID)); err != nil {
+	if err := s.Update(InputTypeNameForUpdateState.GoString(), int64(t.ID)); err != nil {
 		log.Print(err)
 	}
 	return c.Send(m.SendNewNameForType(t.Type))

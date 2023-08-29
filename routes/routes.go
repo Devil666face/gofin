@@ -15,23 +15,37 @@ func SetMiddlewares(b *telebot.Bot, f *fsm.Manager) {
 }
 
 func SetRoutes(b *telebot.Bot, f *fsm.Manager) {
+
+	allowGroup := b.Group()
+	allowGroupFsm := f.NewGroup()
+	allowGroup.Use(AllowOnlyMiddleware)
+	allowGroupFsm.Use(AllowOnlyMiddleware)
+
+	setFreeRoutes(b, f)
+	setCallbackRoutes(allowGroup, allowGroupFsm)
+	setTypeRoutes(allowGroup, allowGroupFsm)
+	setTransRoutes(allowGroup, allowGroupFsm)
+}
+
+func setFreeRoutes(b *telebot.Bot, f *fsm.Manager) {
 	b.Handle("/start", Start)
-	// b.Handle(telebot.OnCallback, CallbackHandler, CallbackKeyValueMw)
+}
 
-	allow := b.Group()
-	fsmallow := f.NewGroup()
+func setCallbackRoutes(b *telebot.Group, f *fsm.Manager) {
+	f.Bind(telebot.OnCallback, fsm.AnyState, CallbackHandler, CallbackKeyValueMiddleware)
+	f.Bind(&kb.BackBtn, fsm.AnyState, OnBackBtn)
+}
 
-	fsmallow.Use(AllowOnlyMiddleware)
-	allow.Use(AllowOnlyMiddleware)
+func setTypeRoutes(b *telebot.Group, f *fsm.Manager) {
+	b.Handle(&kb.TypeTransBtn, OnTypeBtn)
+	f.Bind(&kb.TypeAddBtn, fsm.DefaultState, OnTypeAddBtn)
+	f.Bind(telebot.OnText, InputTypeNameState, OnTypeNameRecive)
+	f.Bind(telebot.OnText, InputTypeNameForUpdateState, OnTypeNameForUpdateRecive)
+}
 
-	fsmallow.Bind(telebot.OnCallback, fsm.AnyState, CallbackHandler, CallbackKeyValueMiddleware)
+func setTransRoutes(b *telebot.Group, f *fsm.Manager) {
+	f.Bind(&kb.AddTransBtn, fsm.DefaultState, OnAddTransBtn)
 
-	allow.Handle(&kb.TypeTransBtn, OnTransBtn)
-	fsmallow.Bind(&kb.BackButton, fsm.AnyState, OnBackBtn)
-	fsmallow.Bind(&kb.TypeAddButton, fsm.DefaultState, OnTypeAddBtn)
-
-	fsmallow.Bind(telebot.OnText, InputTypeNameState, OnTypeNameRecive)
-	fsmallow.Bind(telebot.OnText, InputTypeNameForUpdateState, OnTypeNameForUpdateRecive)
 }
 
 func CallbackHandler(c telebot.Context, s fsm.Context) error {
