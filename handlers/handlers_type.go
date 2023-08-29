@@ -52,7 +52,7 @@ func OnTypeNameRecive(c telebot.Context, s fsm.Context) error {
 
 func OnTypeNameForUpdateRecive(c telebot.Context, s fsm.Context) error {
 	var (
-		typeid int64
+		typeid uint
 		t      TypeTransaction
 	)
 	if err := s.Get(InputTypeNameForUpdateState.GoString(), &typeid); err != nil {
@@ -72,7 +72,7 @@ func OnTypeNameForUpdateRecive(c telebot.Context, s fsm.Context) error {
 
 func getType(c telebot.Context) (TypeTransaction, error) {
 	t := TypeTransaction{}
-	typeid := utils.ToInt64(c.Get(CALLBACK_VAL))
+	typeid := utils.ToUint(c.Get(CALLBACK_VAL))
 	if err := t.Get(typeid); err != nil {
 		return t, c.Send(m.ErrGetTypeForId(typeid))
 	}

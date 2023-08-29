@@ -45,23 +45,34 @@ var (
 		Text:   INCOME,
 		Unique: fmt.Sprintf("%s:%t", CALLBACK_TRANS_BALANCE, CALLBACK_INCOME),
 	}
+	TransCommentInline = &telebot.ReplyMarkup{
+		InlineKeyboard: [][]telebot.InlineButton{
+			{telebot.InlineButton{
+				Text:   EMPTY_COMMENT,
+				Unique: fmt.Sprintf("%s:%s", CALLBACK_TRANS_EMPTY_COMMENT, "empty"),
+			}},
+		},
+		ResizeKeyboard: true,
+	}
 )
 
 var (
-	CALLBACK_CONFIRM_USER string = "confirm_user"
-	CALLBACK_IGNORE_USER  string = "ignore_user"
+	CALLBACK_CONFIRM_USER = "confirm_user"
+	CALLBACK_IGNORE_USER  = "ignore_user"
 )
 
 var (
-	CALLBACK_TYPE        string = "type"
-	CALLBACK_TYPE_UPDATE string = "type_update"
-	CALLBACK_TYPE_DELETE string = "type_delete"
+	CALLBACK_TYPE        = "type"
+	CALLBACK_TYPE_UPDATE = "type_update"
+	CALLBACK_TYPE_DELETE = "type_delete"
 )
 
 var (
-	CALLBACK_TRANS_BALANCE string = "trans_balance"
-	CALLBACK_EXPENSE       bool   = false
-	CALLBACK_INCOME        bool   = true
+	CALLBACK_TRANS_BALANCE       = "trans_balance"
+	CALLBACK_EXPENSE             = false
+	CALLBACK_INCOME              = true
+	CALLBACK_TRANS_TYPE          = "trans_type"
+	CALLBACK_TRANS_EMPTY_COMMENT = "trans_comment"
 )
 
 func init() {
@@ -100,16 +111,24 @@ func InlineAddUser(id int64) *telebot.ReplyMarkup {
 	}
 }
 
-func InlineTypes(trtypes []models.TypeTransaction) *telebot.ReplyMarkup {
+func inlineTypesWithCallback(trtypes []models.TypeTransaction, callbackey string) *telebot.ReplyMarkup {
 	btns := [][]telebot.InlineButton{}
 	for _, v := range trtypes {
-		btn := telebot.InlineButton{Text: v.Type, Unique: fmt.Sprintf("%s:%d", CALLBACK_TYPE, v.ID)}
+		btn := telebot.InlineButton{Text: v.Type, Unique: fmt.Sprintf("%s:%d", callbackey, v.ID)}
 		btns = append(btns, []telebot.InlineButton{btn})
 	}
 	return &telebot.ReplyMarkup{
 		InlineKeyboard: btns,
 		ResizeKeyboard: true,
 	}
+}
+
+func InlineTypes(trtypes []models.TypeTransaction) *telebot.ReplyMarkup {
+	return inlineTypesWithCallback(trtypes, CALLBACK_TYPE)
+}
+
+func InlineTypesForAddTrans(trtypes []models.TypeTransaction) *telebot.ReplyMarkup {
+	return inlineTypesWithCallback(trtypes, CALLBACK_TRANS_TYPE)
 }
 
 func UpdateTypeInline(trtype models.TypeTransaction) *telebot.ReplyMarkup {

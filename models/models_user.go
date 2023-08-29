@@ -18,6 +18,17 @@ type User struct {
 	MoneyTransactions []MoneyTransaction
 }
 
+func (user User) String() string {
+	return user.Username
+}
+
+func (user *User) Get(id uint) error {
+	if err := Db.First(user, id); err != nil {
+		return err.Error
+	}
+	return nil
+}
+
 func (user *User) GetUserByTgID(id int64) error {
 	err := Db.Where("tg_id = ?", id).Take(user)
 	if errors.Is(err.Error, gorm.ErrRecordNotFound) {

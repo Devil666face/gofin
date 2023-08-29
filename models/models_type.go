@@ -13,6 +13,10 @@ type TypeTransaction struct {
 	MoneyTransactions []MoneyTransaction
 }
 
+func (trtype TypeTransaction) String() string {
+	return trtype.Type
+}
+
 func (trtype *TypeTransaction) Create() error {
 	if err := Db.Save(trtype); err != nil {
 		return err.Error
@@ -28,7 +32,7 @@ func GetAllTypesForUser(id int64) ([]TypeTransaction, error) {
 	return trtypes, nil
 }
 
-func (trtype *TypeTransaction) Get(id int64) error {
+func (trtype *TypeTransaction) Get(id uint) error {
 	if err := Db.First(trtype, id); err != nil {
 		return err.Error
 	}

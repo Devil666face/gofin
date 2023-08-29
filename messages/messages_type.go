@@ -51,7 +51,7 @@ func ErrUpdateType(c telebot.Context) string {
 	return fmt.Sprintf("Произошла ошибка при обновлении категории - %s", c.Message().Text)
 }
 
-func ErrGetTypeForId(id int64) string {
+func ErrGetTypeForId(id uint) string {
 	return fmt.Sprintf("Произошла ошибка при получении категории с id - %d", id)
 }
 
