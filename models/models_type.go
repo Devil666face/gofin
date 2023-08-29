@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/Devil666face/gofinabot/database"
+	. "github.com/Devil666face/gofinabot/store/database"
 
 	"gorm.io/gorm"
 )
@@ -14,8 +14,7 @@ type TypeTransaction struct {
 }
 
 func (trtype *TypeTransaction) Create() error {
-	err := database.DB.Save(trtype)
-	if err != nil {
+	if err := Db.Save(trtype); err != nil {
 		return err.Error
 	}
 	return nil
@@ -23,24 +22,21 @@ func (trtype *TypeTransaction) Create() error {
 
 func GetAllTypesForUser(id int64) ([]TypeTransaction, error) {
 	var trtypes = []TypeTransaction{}
-	err := database.DB.Where("user_id = ?", id).Find(&trtypes)
-	if err != nil {
+	if err := Db.Where("user_id = ?", id).Find(&trtypes); err != nil {
 		return trtypes, err.Error
 	}
 	return trtypes, nil
 }
 
 func (trtype *TypeTransaction) Get(id int64) error {
-	err := database.DB.First(trtype, id)
-	if err != nil {
+	if err := Db.First(trtype, id); err != nil {
 		return err.Error
 	}
 	return nil
 }
 
 func (trtype *TypeTransaction) Delete() error {
-	err := database.DB.Unscoped().Delete(trtype)
-	if err != nil {
+	if err := Db.Unscoped().Delete(trtype); err != nil {
 		return err.Error
 	}
 	return nil
@@ -48,8 +44,7 @@ func (trtype *TypeTransaction) Delete() error {
 
 func (trtype *TypeTransaction) UpdateType(t string) error {
 	trtype.Type = t
-	err := database.DB.Save(trtype)
-	if err != nil {
+	if err := Db.Save(trtype); err != nil {
 		return err.Error
 	}
 	return nil

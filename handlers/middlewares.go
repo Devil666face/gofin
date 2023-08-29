@@ -15,7 +15,7 @@ var (
 	CALLBACK_VAL = "callback_val"
 )
 
-func CallbackKeyValueMw(next telebot.HandlerFunc) telebot.HandlerFunc {
+func CallbackKeyValueMiddleware(next telebot.HandlerFunc) telebot.HandlerFunc {
 	return func(c telebot.Context) error {
 		if c.Callback() != nil {
 			r := strings.ReplaceAll(c.Callback().Data, "\f", "")
@@ -27,7 +27,7 @@ func CallbackKeyValueMw(next telebot.HandlerFunc) telebot.HandlerFunc {
 	}
 }
 
-func permissionMw(selectorFunc func() ([]User, error), next telebot.HandlerFunc) telebot.HandlerFunc {
+func permission(selectorFunc func() ([]User, error), next telebot.HandlerFunc) telebot.HandlerFunc {
 	chats, err := GetChatIdsForSelector(selectorFunc)
 	if err != nil {
 		log.Print(err)
@@ -37,10 +37,10 @@ func permissionMw(selectorFunc func() ([]User, error), next telebot.HandlerFunc)
 
 }
 
-func AdminOnlyMw(next telebot.HandlerFunc) telebot.HandlerFunc {
-	return permissionMw(GetAllAdmins, next)
+func AdminOnlyMiddleware(next telebot.HandlerFunc) telebot.HandlerFunc {
+	return permission(GetAllAdmins, next)
 }
 
-func AllowOnlyMw(next telebot.HandlerFunc) telebot.HandlerFunc {
-	return permissionMw(GetAllAllows, next)
+func AllowOnlyMiddleware(next telebot.HandlerFunc) telebot.HandlerFunc {
+	return permission(GetAllAllows, next)
 }

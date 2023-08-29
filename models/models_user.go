@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	. "github.com/Devil666face/gofinabot/config"
-	"github.com/Devil666face/gofinabot/database"
+	. "github.com/Devil666face/gofinabot/store/database"
 
 	"gorm.io/gorm"
 )
@@ -19,7 +19,7 @@ type User struct {
 }
 
 func (user *User) GetUserByTgID(id int64) error {
-	err := database.DB.Where("tg_id = ?", id).Take(user)
+	err := Db.Where("tg_id = ?", id).Take(user)
 	if errors.Is(err.Error, gorm.ErrRecordNotFound) {
 		return err.Error
 	}
@@ -27,16 +27,14 @@ func (user *User) GetUserByTgID(id int64) error {
 }
 
 func (user *User) Create() error {
-	err := database.DB.Save(user)
-	if err != nil {
+	if err := Db.Save(user); err != nil {
 		return err.Error
 	}
 	return nil
 }
 
 func (user *User) Update() error {
-	err := database.DB.Save(user)
-	if err != nil {
+	if err := Db.Save(user); err != nil {
 		return err.Error
 	}
 	return nil
@@ -44,7 +42,7 @@ func (user *User) Update() error {
 
 func getUsersForSelect(query string) ([]User, error) {
 	var users = []User{}
-	err := database.DB.Where(query, true).Find(&users)
+	err := Db.Where(query, true).Find(&users)
 	if err != nil {
 		users = append(users, User{TGID: Cfg.SuperuserId})
 		return users, err.Error

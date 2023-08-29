@@ -4,12 +4,12 @@ import (
 	"time"
 
 	. "github.com/Devil666face/gofinabot/config"
-	"github.com/Devil666face/gofinabot/database"
 	"github.com/Devil666face/gofinabot/models"
 	. "github.com/Devil666face/gofinabot/routes"
+	"github.com/Devil666face/gofinabot/store/database"
+	"github.com/Devil666face/gofinabot/store/memstore"
 
 	"github.com/vitaliy-ukiru/fsm-telebot"
-	"github.com/vitaliy-ukiru/fsm-telebot/storages/memory"
 	telebot "gopkg.in/telebot.v3"
 )
 
@@ -26,10 +26,12 @@ func Migrate() error {
 }
 
 func Bot() (*telebot.Bot, error) {
+	memstore.Store()
 	dberr := database.Connect()
 	if dberr != nil {
 		return nil, dberr
 	}
+
 	conf := telebot.Settings{
 		Token:     Cfg.Token,
 		Poller:    &telebot.LongPoller{Timeout: 10 * time.Second},
@@ -42,7 +44,7 @@ func Bot() (*telebot.Bot, error) {
 		return nil, err
 	}
 
-	f := fsm.NewManager(b, nil, memory.NewStorage(), nil)
+	f := fsm.NewManager(b, nil, memstore.Memstore, nil)
 
 	SetMiddlewares(b, f)
 	SetRoutes(b, f)

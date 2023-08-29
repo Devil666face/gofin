@@ -10,25 +10,9 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var DB *gorm.DB
-
-var Userstore map[int64]map[string]interface{}
-
-func init() {
-	Userstore = make(map[int64]map[string]interface{})
-}
-
-func SetInStore(id int64, k string, v interface{}) {
-	if _, ok := Userstore[id]; !ok {
-		Userstore[id] = make(map[string]interface{})
-	}
-	Userstore[id][k] = v
-}
-
-func GetFromStore(id int64, k string) (interface{}, bool) {
-	val, ok := Userstore[id][k]
-	return val, ok
-}
+var (
+	Db *gorm.DB
+)
 
 func Connect() error {
 	db, err := gorm.Open(sqlite.Open(Cfg.Db), &gorm.Config{
@@ -38,7 +22,7 @@ func Connect() error {
 	if err != nil {
 		return err
 	}
-	DB = db
+	Db = db
 	return nil
 }
 
@@ -47,5 +31,5 @@ func Migrate(tables ...interface{}) error {
 	if err != nil {
 		return err
 	}
-	return DB.AutoMigrate(tables...)
+	return Db.AutoMigrate(tables...)
 }

@@ -1,9 +1,11 @@
-package utils
+package markup
 
 import (
 	"fmt"
 
+	. "github.com/Devil666face/gofinabot/messages"
 	"github.com/Devil666face/gofinabot/models"
+
 	telebot "gopkg.in/telebot.v3"
 )
 
@@ -84,7 +86,8 @@ func UpdateTypeInline(trtype models.TypeTransaction) *telebot.ReplyMarkup {
 	delete := telebot.InlineButton{Text: DeleteTypeText(trtype.Type), Unique: fmt.Sprintf("%s:%d", CALLBACK_TYPE_DELETE, trtype.ID)}
 	return &telebot.ReplyMarkup{
 		InlineKeyboard: [][]telebot.InlineButton{
-			{update, delete},
+			{update},
+			{delete},
 		},
 		ResizeKeyboard: true,
 	}
