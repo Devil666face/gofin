@@ -28,7 +28,11 @@ var (
 )
 
 func CheckCreatedTrans(tr models.MoneyTransaction) string {
-	return fmt.Sprintf("Создать операцию со значениями:\nТип: <b>%s</b>\nКатегория: <b>%s</b>\nСумма: <b>%d</b>\nКоментарий: <b>%s</b>\n", tr.Balance(), tr.TypeTransaction(), tr.Value, tr.Comment)
+	return "Создать операцию со значениями:" + EnumerateTransFields(tr)
+}
+
+func EnumerateTransFields(tr models.MoneyTransaction) string {
+	return fmt.Sprintf("\nТип: <b>%s</b>\nКатегория: <b>%s</b>\nСумма: <b>%d</b>\nКоментарий: <b>%s</b>\n", tr.Balance(), tr.TypeTransaction(), tr.Value, tr.Comment)
 }
 
 func ErrDisableValue(c telebot.Context) string {

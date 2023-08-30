@@ -92,6 +92,19 @@ var (
 )
 
 var (
+	StatMenu = &telebot.ReplyMarkup{
+		ReplyKeyboard: [][]telebot.ReplyButton{
+			{ExcelReportBtn},
+			{BackBtn},
+		},
+		ResizeKeyboard: true,
+	}
+	ExcelReportBtn = telebot.ReplyButton{
+		Text: STATISTIC_EXCEL_REPORT,
+	}
+)
+
+var (
 	CALLBACK_CONFIRM_USER = "confirm_user"
 	CALLBACK_IGNORE_USER  = "ignore_user"
 )
@@ -111,6 +124,11 @@ var (
 	CALLBACK_TRANS_CREATE        = "trans_create"
 	CALLBACK_TRANS_CREATE_ADD    = true
 	CALLBACK_TRANS_CREATE_CANCEL = false
+)
+
+var (
+	CALLBACK_TRANS_STAT   = "trans"
+	CALLBACK_TRANS_DELETE = "trans_delete"
 )
 
 func InlineAddUser(id int64) *telebot.ReplyMarkup {
@@ -150,6 +168,34 @@ func UpdateTypeInline(trtype models.TypeTransaction) *telebot.ReplyMarkup {
 	return &telebot.ReplyMarkup{
 		InlineKeyboard: [][]telebot.InlineButton{
 			{update},
+			{delete},
+		},
+		ResizeKeyboard: true,
+	}
+}
+
+func InlineTransStatList(transes []models.MoneyTransaction) *telebot.ReplyMarkup {
+	inlinekb := [][]telebot.InlineButton{}
+	for i, trans := range transes {
+		btn := telebot.InlineButton{
+			Text:   fmt.Sprintf("%d. %s %d", i+1, trans.TypeTransaction(), trans.Value),
+			Unique: fmt.Sprintf("%s:%d", CALLBACK_TRANS_STAT, trans.ID),
+		}
+		inlinekb = append(inlinekb, []telebot.InlineButton{btn})
+	}
+	return &telebot.ReplyMarkup{
+		InlineKeyboard: inlinekb,
+		ResizeKeyboard: true,
+	}
+}
+
+func InlineTransDelete(trans models.MoneyTransaction) *telebot.ReplyMarkup {
+	delete := telebot.InlineButton{
+		Text:   TRANS_DELETE,
+		Unique: fmt.Sprintf("%s:%d", CALLBACK_TRANS_DELETE, trans.ID),
+	}
+	return &telebot.ReplyMarkup{
+		InlineKeyboard: [][]telebot.InlineButton{
 			{delete},
 		},
 		ResizeKeyboard: true,

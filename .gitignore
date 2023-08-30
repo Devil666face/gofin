@@ -2,3 +2,5 @@
 /gofinabot
 /.env
 /db.sqlite3
+/*.xlsx
+/var

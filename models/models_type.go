@@ -9,7 +9,7 @@ import (
 type TypeTransaction struct {
 	gorm.Model
 	UserID            uint
-	Type              string `gorm:"not null;index"`
+	Type              string `gorm:"not null;uniqueIndex"`
 	MoneyTransactions []MoneyTransaction
 }
 

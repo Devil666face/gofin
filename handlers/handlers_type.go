@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 
 	kb "github.com/Devil666face/gofinabot/markup"
@@ -57,7 +56,6 @@ func OnTypeNameForUpdateRecive(c telebot.Context, s fsm.Context) error {
 		t      TypeTransaction
 	)
 	if err := s.Get(InputTypeNameForUpdateState.GoString(), &typeid); err != nil {
-		fmt.Println("error")
 		log.Print(err)
 	}
 	if err := t.Get(typeid); err != nil {
@@ -78,23 +76,26 @@ func getType(c telebot.Context) (TypeTransaction, error) {
 	if err := t.Get(typeid); err != nil {
 		return t, c.Send(m.ErrGetTypeForId(typeid))
 	}
+	if c.Chat().ID != int64(t.UserID) {
+		return t, telebot.ErrNotFound
+	}
 	return t, nil
 }
 
 func OnUpdateCurrentTypeInlineBtn(c telebot.Context) error {
 	delete(c)
-	t, _ := getType(c)
-	if c.Chat().ID != int64(t.UserID) {
-		return nil
+	t, err := getType(c)
+	if err != nil {
+		return err
 	}
 	return c.Send(m.UpdateType(t.Type), kb.UpdateTypeInline(t))
 }
 
 func OnUpdateTypeNameInlineBtn(c telebot.Context, s fsm.Context) error {
 	delete(c)
-	t, _ := getType(c)
-	if c.Chat().ID != int64(t.UserID) {
-		return nil
+	t, err := getType(c)
+	if err != nil {
+		return err
 	}
 	if err := s.Set(InputTypeNameForUpdateState); err != nil {
 		log.Print(err)
@@ -107,9 +108,9 @@ func OnUpdateTypeNameInlineBtn(c telebot.Context, s fsm.Context) error {
 
 func OnDeleteTypeInlineBtn(c telebot.Context) error {
 	delete(c)
-	t, _ := getType(c)
-	if c.Chat().ID != int64(t.UserID) {
-		return nil
+	t, err := getType(c)
+	if err != nil {
+		return err
 	}
 	if err := t.Delete(); err != nil {
 		return c.Send(m.ErrDeleteType(t.Type), kb.Menu)

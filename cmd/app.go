@@ -14,12 +14,11 @@ import (
 )
 
 func Migrate() error {
-	err := database.Migrate(
+	if err := database.Migrate(
 		&models.MoneyTransaction{},
 		&models.TypeTransaction{},
 		&models.User{},
-	)
-	if err != nil {
+	); err != nil {
 		return err
 	}
 	return nil
@@ -27,9 +26,11 @@ func Migrate() error {
 
 func Bot() (*telebot.Bot, error) {
 	memstore.Store()
-	dberr := database.Connect()
-	if dberr != nil {
-		return nil, dberr
+	if err := database.Connect(); err != nil {
+		return nil, err
+	}
+	if err := Migrate(); err != nil {
+		return nil, err
 	}
 
 	conf := telebot.Settings{

@@ -1,0 +1,11 @@
+version: "3"
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APP_NAME: gofinabot
+      TOKEN: ${TOKEN}
+    volumes:
+      - ./var:/var/www/gofinabot/db

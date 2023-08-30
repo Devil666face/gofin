@@ -2,6 +2,9 @@ package utils
 
 import (
 	"strconv"
+	"time"
+
+	"github.com/jinzhu/now"
 )
 
 func ToInt64(s interface{}) int64 {
@@ -24,4 +27,8 @@ func ToInt(s interface{}) (int, error) {
 		return 0, err
 	}
 	return i, nil
+}
+
+func GetStartAndEndOfMonth() (time.Time, time.Time) {
+	return now.BeginningOfMonth(), now.EndOfMonth()
 }
