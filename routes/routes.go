@@ -47,6 +47,7 @@ func setTransRoutes(b *telebot.Group, f *fsm.Manager) {
 	f.Bind(&kb.AddTransBtn, fsm.DefaultState, OnAddTransBtn)
 	f.Bind(telebot.OnText, InputTransCommentState, OnTransCommentRecive)
 	f.Bind(telebot.OnText, InputTransValueState, OnTransValueRecive)
+	// f.Bind(telebot.OnCallback, InputTransCheckAll, OnTransAddInlineBtn)
 }
 
 func CallbackHandler(c telebot.Context, s fsm.Context) error {
@@ -67,6 +68,8 @@ func CallbackHandler(c telebot.Context, s fsm.Context) error {
 		return OnTransTypeInlibeBtn(c, s)
 	case kb.CALLBACK_TRANS_EMPTY_COMMENT:
 		return OnTransCommentRecive(c, s)
+	case kb.CALLBACK_TRANS_CREATE:
+		return OnTransAddInlineBtn(c, s)
 	}
 	return nil
 }

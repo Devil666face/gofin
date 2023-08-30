@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 
 	kb "github.com/Devil666face/gofinabot/markup"
@@ -56,6 +57,7 @@ func OnTypeNameForUpdateRecive(c telebot.Context, s fsm.Context) error {
 		t      TypeTransaction
 	)
 	if err := s.Get(InputTypeNameForUpdateState.GoString(), &typeid); err != nil {
+		fmt.Println("error")
 		log.Print(err)
 	}
 	if err := t.Get(typeid); err != nil {
@@ -97,7 +99,7 @@ func OnUpdateTypeNameInlineBtn(c telebot.Context, s fsm.Context) error {
 	if err := s.Set(InputTypeNameForUpdateState); err != nil {
 		log.Print(err)
 	}
-	if err := s.Update(InputTypeNameForUpdateState.GoString(), int64(t.ID)); err != nil {
+	if err := s.Update(InputTypeNameForUpdateState.GoString(), t.ID); err != nil {
 		log.Print(err)
 	}
 	return c.Send(m.SendNewNameForType(t.Type))

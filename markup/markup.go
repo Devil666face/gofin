@@ -54,6 +54,20 @@ var (
 		},
 		ResizeKeyboard: true,
 	}
+	CreateTransInlineBtn = telebot.InlineButton{
+		Text:   TRANS_CREATE,
+		Unique: fmt.Sprintf("%s:%t", CALLBACK_TRANS_CREATE, CALLBACK_TRANS_CREATE_ADD),
+	}
+	CancelTransInlineBtn = telebot.InlineButton{
+		Text:   TRANS_CANCEL,
+		Unique: fmt.Sprintf("%s:%t", CALLBACK_TRANS_CREATE, CALLBACK_TRANS_CREATE_CANCEL),
+	}
+	TransAddInline = &telebot.ReplyMarkup{
+		InlineKeyboard: [][]telebot.InlineButton{
+			{CreateTransInlineBtn, CancelTransInlineBtn},
+		},
+		ResizeKeyboard: true,
+	}
 )
 
 var (
@@ -73,6 +87,9 @@ var (
 	CALLBACK_INCOME              = true
 	CALLBACK_TRANS_TYPE          = "trans_type"
 	CALLBACK_TRANS_EMPTY_COMMENT = "trans_comment"
+	CALLBACK_TRANS_CREATE        = "trans_create"
+	CALLBACK_TRANS_CREATE_ADD    = true
+	CALLBACK_TRANS_CREATE_CANCEL = false
 )
 
 func init() {

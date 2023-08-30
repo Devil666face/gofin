@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 
 	kb "github.com/Devil666face/gofinabot/markup"
@@ -36,7 +35,7 @@ func OnAddTransBtn(c telebot.Context, s fsm.Context) error {
 
 func OnTransBalanceInlineBtn(c telebot.Context, s fsm.Context) error {
 	delete(c)
-	if err := s.Update(InputTransBalanceState.GoString(), utils.StoBoll(c.Get(CALLBACK_VAL))); err != nil {
+	if err := s.Update(InputTransBalanceState.GoString(), utils.StoBool(c.Get(CALLBACK_VAL))); err != nil {
 		log.Print(err)
 	}
 	if err := s.Set(InputTransTypeState); err != nil {
@@ -109,6 +108,14 @@ func OnTransValueRecive(c telebot.Context, s fsm.Context) error {
 		Comment:           comment,
 	}
 
+	if tr.MoneyBalance && tr.Value < 0 {
+		return c.Send(m.ERR_INCOME_AND_NEGATIVE_VALUE)
+	}
+
+	if !tr.MoneyBalance && tr.Value > 0 {
+		return c.Send(m.ERR_EXPENSE_AND_POSITIVE_VALUE)
+	}
+
 	if err := s.Update(InputTransCheckAll.GoString(), tr); err != nil {
 		log.Print(err)
 	}
@@ -117,12 +124,26 @@ func OnTransValueRecive(c telebot.Context, s fsm.Context) error {
 		log.Print(err)
 	}
 
-	return c.Send(m.CheckCreatedTrans(tr))
+	return c.Send(m.CheckCreatedTrans(tr), kb.TransAddInline)
 }
 
 func OnTransAddInlineBtn(c telebot.Context, s fsm.Context) error {
+	delete(c)
+	var (
+		tr MoneyTransaction
+	)
+	if err := s.Get(InputTransCheckAll.GoString(), &tr); err != nil {
+		log.Print(err)
+	}
 	if err := s.Finish(true); err != nil {
 		log.Print(err)
 	}
-	return nil
+	switch utils.StoBool(c.Get(CALLBACK_VAL)) {
+	case kb.CALLBACK_TRANS_CREATE_ADD:
+		if err := tr.Create(); err != nil {
+			return c.Send(m.ERR_TRANS_CREATE, kb.Menu)
+		}
+		return c.Send(m.TRANS_SUCCESSFUL_CREATE, kb.Menu)
+	}
+	return c.Send(m.TRANS_CANCEL_MESSAGE, kb.Menu)
 }

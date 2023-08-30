@@ -3,6 +3,8 @@ package models
 import (
 	"log"
 
+	. "github.com/Devil666face/gofinabot/store/database"
+
 	"gorm.io/gorm"
 )
 
@@ -15,11 +17,19 @@ type MoneyTransaction struct {
 	Comment           string
 }
 
-// func (t *MoneyTransaction) String() string {
-// 	return ""
-// }
+func (trans *MoneyTransaction) Balance() string {
+	if trans.MoneyBalance {
+		return "Доход"
+	}
+	return "Расход"
+}
 
-// func (trans *MoneyTransaction) Mone() string {
+func (trans *MoneyTransaction) Create() error {
+	if err := Db.Save(trans); err != nil {
+		return err.Error
+	}
+	return nil
+}
 
 func (trans *MoneyTransaction) TypeTransaction() TypeTransaction {
 	var trtype TypeTransaction

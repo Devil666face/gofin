@@ -14,17 +14,14 @@ func ToUint(s interface{}) uint {
 	return uint(i)
 }
 
-func StoBoll(s interface{}) bool {
-	if s.(string) == "true" {
-		return true
-	}
-	return false
+func StoBool(s interface{}) bool {
+	return s.(string) == "true"
 }
 
 func ToInt(s interface{}) (int, error) {
 	i, err := strconv.Atoi(s.(string))
-	if err!=nil {
-		return 0,err
+	if err != nil {
+		return 0, err
 	}
-	return i,nil
+	return i, nil
 }
