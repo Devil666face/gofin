@@ -1,10 +1,10 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 ENV TOKEN ${TOKEN}
 ENV SUPERUSERID 446545799
 ENV DB ./db/db.sqlite3
 ENV LOG true
-ENV DEPS "wget ca-certificates"
+ENV DEPS "wget"
 ENV APP_NAME gofinabot
 
 RUN DEBIAN_FRONTEND=noninteractive \
