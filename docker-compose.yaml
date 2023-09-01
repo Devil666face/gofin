@@ -7,5 +7,6 @@ services:
     environment:
       APP_NAME: gofinabot
       TOKEN: ${TOKEN}
+    restart: always
     volumes:
       - ./var:/var/www/gofinabot/db
