@@ -1,11 +1,11 @@
 package main
 
 import (
-	. "github.com/Devil666face/gofinabot/cmd"
+	"github.com/Devil666face/gofinabot/cmd"
 )
 
 func main() {
-	bot, err := Bot()
+	bot, err := cmd.Bot()
 	if err != nil {
 		panic(err)
 	}

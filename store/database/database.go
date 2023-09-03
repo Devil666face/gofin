@@ -27,7 +27,9 @@ func setPath(file string) (string, error) {
 	}
 	dir := filepath.Dir(abs)
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		os.MkdirAll(dir, os.ModePerm)
+		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+			return "", err
+		}
 	}
 	return abs, nil
 }

@@ -64,9 +64,9 @@ func (r *ExcelReport) Save() error {
 func (r *ExcelReport) setCellValues() {
 	r.file.SetActiveSheet(r.sheetIndex)
 	for i, v := range r.trans {
-		r.set(1, i+1, fmt.Sprintf("%s", v.CreatedAt))
-		r.set(2, i+1, fmt.Sprintf("%s", v.TypeTransaction()))
-		r.set(3, i+1, fmt.Sprintf("%s", v.Balance()))
+		r.set(1, i+1, v.CreatedAt)
+		r.set(2, i+1, v.TypeTransaction())
+		r.set(3, i+1, v.Balance())
 		r.set(4, i+1, v.Comment)
 		r.set(5, i+1, v.Value)
 	}
@@ -79,7 +79,7 @@ func (r *ExcelReport) setTotalsCellValues() {
 		if err := trtype.Get(k); err != nil {
 			log.Print(err)
 		}
-		r.set(3, i, fmt.Sprintf("%s", trtype))
+		r.set(3, i, trtype)
 		r.set(4, i, v)
 		r.set(5, i, fmt.Sprintf("%.2f", r.calc.Percent[k]))
 		i++
