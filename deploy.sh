@@ -30,7 +30,8 @@ fi
 
 read -p "Create .env file? [y/n] " STATUS
 if [[ "$STATUS" = "y" ]]; then
-  read -p "TOKEN" TOKEN
+  read -p "TOKEN=" TOKEN
   echo "TOKEN=$TOKEN" >> .env
 fi
 chown -R www-data:www-data ../$APP_NAME
+systemctl restart $APP_NAME.service
