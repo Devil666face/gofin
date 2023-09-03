@@ -26,6 +26,7 @@ air-install: ## Install air
 
 lint: ## Run linter
 	~/go/bin/golangci-lint run
+	~/go/bin/golangci-lint run --deadline=30m --enable=misspell --enable=gosec --enable=gofmt --enable=goimports --enable=revive 
 
 lint-install: ## Install golangci-lint
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ~/go/bin v1.54.2
