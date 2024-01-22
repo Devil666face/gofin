@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 ENV TOKEN ${TOKEN}
 ENV SUPERUSERID 446545799
-ENV DB ./db/db.sqlite3
+ENV DB db.sqlite3
 ENV LOG true
 ENV DEPS "wget ca-certificates"
 ENV APP_NAME gofinabot
@@ -16,7 +16,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     && apt-get --quiet --quiet clean \
     && rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /var/www/${APP_NAME}
+WORKDIR ${APP_NAME}
 
 RUN wget --no-check-certificate https://github.com/Devil666face/${APP_NAME}/releases/latest/download/${APP_NAME}.tgz && \
     tar -xf ${APP_NAME}.tgz && \
