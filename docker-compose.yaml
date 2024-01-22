@@ -1,12 +1,12 @@
 version: "3"
 services:
-  app:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+  gofinabot:
+    container_name: gofinabot
+    image: ghcr.io/devil666face/gofinabot:main
     environment:
       APP_NAME: gofinabot
-      TOKEN: ${TOKEN}
+      TOKEN: $TOKEN
+      DB: $DB
     restart: always
     volumes:
-      - ./var:/var/www/gofinabot/db
+      - /opt/docker/gofinabot/db:/gofinabot/db
