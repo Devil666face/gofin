@@ -2,7 +2,7 @@ FROM ubuntu:20.04
 
 ENV TOKEN ${TOKEN}
 ENV SUPERUSERID 446545799
-ENV DB db.sqlite3
+ENV DB_GOFINABOT db.sqlite3
 ENV LOG true
 ENV DEPS "wget ca-certificates locales libsqlite3-0"
 ENV APP_NAME gofinabot
