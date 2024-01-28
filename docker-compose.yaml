@@ -6,7 +6,7 @@ services:
     environment:
       APP_NAME: gofinabot
       TOKEN: $TOKEN
-      DB_GOFINABOT: $DB_GOFINABOT
+      DB: $DB
     restart: always
     volumes:
       - /opt/docker/gofinabot/db:/gofinabot/db
