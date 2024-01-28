@@ -4,7 +4,7 @@ ENV TOKEN ${TOKEN}
 ENV SUPERUSERID 446545799
 ENV DB db.sqlite3
 ENV LOG true
-ENV DEPS "wget ca-certificates locale"
+ENV DEPS "wget ca-certificates locales"
 ENV APP_NAME gofinabot
 
 RUN DEBIAN_FRONTEND=noninteractive \
